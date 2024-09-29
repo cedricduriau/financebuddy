@@ -6,8 +6,8 @@ import io
 import json
 
 # third party
-import chardet
 import dateutil.parser
+from charset_normalizer import from_bytes
 
 # package
 from financebuddy import currencyutils
@@ -29,8 +29,8 @@ def read_csv(path: str, config: CSVParserConfig):
     with open(path, "rb") as fp:
         # detect encoding
         sample_bytes = fp.read(1024)
-        scan: dict[str, str] = chardet.detect(sample_bytes)
-        encoding: str = scan["encoding"]
+        scan = from_bytes(sample_bytes).best()
+        encoding: str = scan.encoding
 
         # detect csv dialect
         sample_str = str(fp.readline(), encoding=encoding)
