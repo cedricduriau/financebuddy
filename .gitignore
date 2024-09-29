@@ -1,0 +1,14 @@
+# dirs
+__pycache__/
+.vscode/
+.pytest_cache/
+build/
+dist/
+.env/
+venv/
+.ruff_cache/
+
+# files
+*.egg-info
+*.DS_Store
+.coverage

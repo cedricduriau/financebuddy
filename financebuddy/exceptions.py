@@ -1,0 +1,2 @@
+class FinanceBuddyException(Exception):
+    pass
