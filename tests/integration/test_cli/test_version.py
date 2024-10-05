@@ -2,7 +2,7 @@
 import os
 
 # package
-from financebuddy import cli
+from financebuddy import cli, __version__
 
 
 def test_cli_version(capfd):
@@ -12,4 +12,4 @@ def test_cli_version(capfd):
     out, _ = capfd.readouterr()
     out = out.rstrip(os.linesep)
 
-    assert out == "0.3.0"
+    assert out == __version__
