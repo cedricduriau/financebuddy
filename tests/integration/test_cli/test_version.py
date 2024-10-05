@@ -2,7 +2,7 @@
 import os
 
 # package
-from financebuddy import cli, __version__
+from financebuddy import __version__, cli
 
 
 def test_cli_version(capfd):
