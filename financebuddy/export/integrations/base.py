@@ -1,3 +1,8 @@
+# stdlib
+import datetime
+import os
+import tempfile
+
 # package
 from financebuddy.export.models import ExporterExtension, ExporterFormat, ExportReport, ExportTransaction
 from financebuddy.report.models import Report
@@ -16,6 +21,13 @@ class Exporter:
                 export_transactions.append(export_transaction)
         export_report = ExportReport(transactions=export_transactions)
         return export_report
+
+    def build_export_report_path(self) -> str:
+        directory = tempfile.gettempdir()
+        timestamp = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        basename = f"financebuddy_export_{self.format}_{timestamp}.{self.extension}"
+        path = os.path.join(directory, basename)
+        return path
 
     def dump_report(self, export_report: ExportReport) -> str:
         raise NotImplementedError()
