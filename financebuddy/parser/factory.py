@@ -7,7 +7,7 @@ from financebuddy.parserconfig.models import ParserConfig, ParserExtension
 MAP_PARSER_BY_EXT = {ParserExtension.CSV: CSVParser}
 
 
-def get_parser_type(extension: ParserExtension):
+def get_parser_type(extension: ParserExtension) -> type[Parser]:
     try:
         ParserType = MAP_PARSER_BY_EXT[extension]
     except KeyError:
