@@ -1,0 +1,7 @@
+{
+    "format": "foo",
+    "extension": "csv",
+    "settings": {
+        "field_map": {}
+    }
+}

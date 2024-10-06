@@ -4,10 +4,10 @@ from financebuddy.parser.integrations.base import Parser
 from financebuddy.parser.integrations.csv import CSVParser
 from financebuddy.parserconfig.models import ParserConfig, ParserExtension
 
-MAP_PARSER_BY_EXT = {ParserExtension.CSV: CSVParser}
+MAP_PARSER_BY_EXT: dict[ParserExtension, type[Parser]] = {ParserExtension.CSV: CSVParser}
 
 
-def get_parser_type(extension: ParserExtension):
+def get_parser_type(extension: ParserExtension) -> type[Parser]:
     try:
         ParserType = MAP_PARSER_BY_EXT[extension]
     except KeyError:

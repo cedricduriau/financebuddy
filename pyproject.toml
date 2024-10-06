@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "financebuddy"
-version = "0.3.0"
+version = "0.4.0"
 authors = [
   { name="Cedric Duriau", email="duriau.cedric@live.be" },
 ]
@@ -32,6 +32,8 @@ dev = [
   "pip-tools>=6.12.0",
   "pytest>=7.3.1",
   "pytest-cov>=4.0.0",
+  "freezegun>=1.5.0",
+  "pytest-freezegun>=0.4.0",
 ]
 
 [project.scripts]
@@ -57,8 +59,6 @@ branch = true
 relative_files = true
 omit = [
     "**/__init__.py",
-    "financebuddy/cli.py",
-    "financebuddy/settings.py",
 ]
 
 [tool.coverage.report]
