@@ -4,7 +4,7 @@ import os
 from typing import Any
 
 # third party
-from financebuddy_parsers import DIR_CONFIGS, PARSER_CONFIGS
+import financebuddy_parsers
 
 # package
 from financebuddy.exceptions import FinanceBuddyException
@@ -39,13 +39,13 @@ def load_parser_config(path: str) -> ParserConfig:
 
 
 def get_parser_configs() -> list[ParserConfig]:
-    configs = list(map(load_parser_config, PARSER_CONFIGS))
+    configs = list(map(load_parser_config, financebuddy_parsers.PARSER_CONFIGS))
     return configs
 
 
 def build_path(format: str, extension: str) -> str:
     basename = f"parser_{format}_{extension}_config.json"
-    path = os.path.join(DIR_CONFIGS, basename)
+    path = os.path.join(financebuddy_parsers.DIR_CONFIGS, basename)
     return path
 
 
