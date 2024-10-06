@@ -12,6 +12,8 @@ from financebuddy.parser import api as parserapi
 from financebuddy.parserconfig import api as configapi
 from financebuddy.report import api as reportapi
 
+OUT_ERROR_PREFIX = "financebuddy-cli: error:"
+
 
 # ==============================================================================
 # actions
@@ -88,27 +90,31 @@ def build_parser() -> ArgumentParser:
 # ==============================================================================
 # main
 # ==============================================================================
-def run() -> None:
+def run(args: list[str] | None = None) -> int:
     parser = build_parser()
-    namespace = parser.parse_args()
+    namespace = parser.parse_args(args)
     kwargs = vars(namespace)
 
     version = kwargs.pop("version")
     if version:
         print(__version__)
-        exit()
+        return 0
 
     try:
         func = kwargs.pop("func")
     except KeyError:
-        print("Missing or incomplete action, see -h/--help")
-        exit()
+        print(f"{OUT_ERROR_PREFIX} missing or incomplete action, see -h/--help")
+        return 1
 
     try:
         func(**kwargs)
     except FinanceBuddyException as e:
-        print(e)
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    run()
+    code = run()
+    exit(code)

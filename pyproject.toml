@@ -59,8 +59,6 @@ branch = true
 relative_files = true
 omit = [
     "**/__init__.py",
-    "financebuddy/cli.py",
-    "financebuddy/settings.py",
 ]
 
 [tool.coverage.report]

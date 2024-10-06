@@ -7,7 +7,7 @@ from financebuddy.parserconfig.models import ParserConfig
 
 
 def test_init(fix_parser_config: ParserConfig):
-    Parser.extension == "unknown"
+    assert Parser.extension == "unknown"
     parser = Parser(fix_parser_config)
     assert parser.config.format == "foo"
     assert parser.config.extension == "unknown"
