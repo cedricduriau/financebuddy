@@ -113,11 +113,11 @@ class CSVParser(Parser):
                 continue
 
             # parse row
-            model: ReportTransaction | None = None
+            transaction: ReportTransaction | None = None
             error: ReportError | None = None
 
             try:
-                model = csv_row_to_model(row, content, self.config)
+                transaction = csv_row_to_model(row, content, self.config)
             except Exception as e:
                 error = ReportError(
                     raw=json.dumps(content),
@@ -126,7 +126,7 @@ class CSVParser(Parser):
                 )
                 errors.append(error)
 
-            parsed_item = ReportItem(model=model, error=error)
+            parsed_item = ReportItem(transaction=transaction, error=error)
             parsed_items.append(parsed_item)
 
         report = Report(

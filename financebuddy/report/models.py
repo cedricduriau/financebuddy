@@ -43,7 +43,7 @@ class ReportError(BaseModel):
 
 
 class ReportItem(BaseModel):
-    model: ReportTransaction | None = None
+    transaction: ReportTransaction | None = None
     error: ReportError | None = None
 
 

@@ -16,8 +16,8 @@ class Exporter:
     def report_to_export_report(report: Report) -> ExportReport:
         export_transactions: list[ExportTransaction] = []
         for item in report.items:
-            if model := item.model:
-                export_transaction = ExportTransaction.model_validate(model.model_dump())
+            if transaction := item.transaction:
+                export_transaction = ExportTransaction.model_validate(transaction.model_dump())
                 export_transactions.append(export_transaction)
         export_report = ExportReport(transactions=export_transactions)
         return export_report
