@@ -6,6 +6,33 @@ from financebuddy.parser import helpers
 
 
 @pytest.mark.parametrize(
+    ["s", "expected"],
+    [
+        ("", ""),
+        (" ", ""),
+        ("foo", "foo"),
+        ("foo ", "foo"),
+        (" foo", "foo"),
+        (" foo ", "foo"),
+    ],
+)
+def test_remove_whitespace(s: str, expected: str):
+    assert helpers.remove_whitespace(s) == expected
+
+
+@pytest.mark.parametrize(
+    ["s", "expected"],
+    [
+        ("", ""),
+        ("+", ""),
+        ("-", "-"),
+    ],
+)
+def test_remove_plus(s: str, expected: str):
+    assert helpers.remove_plus(s) == expected
+
+
+@pytest.mark.parametrize(
     ["inp", "out"],
     [
         # single digit
@@ -18,10 +45,13 @@ from financebuddy.parser import helpers
         # financial notation
         ("1,000.00", "1000.00"),
         ("1,000,000.00", "1000000.00"),
+        # signed value
+        ("+50.00", "50.00"),
+        ("-50.00", "-50.00"),
     ],
 )
-def test_fix_value_string(inp: str, out: str):
-    assert helpers.fix_value_string(inp) == out
+def test_sanitize_value_string(inp: str, out: str):
+    assert helpers.sanitize_value_string(inp) == out
 
 
 def test_hash_string():
