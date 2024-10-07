@@ -1,17 +1,32 @@
 # stdlib
 import hashlib
+import re
+
+REGEX_WHITESPACE = re.compile(r"\s*")
 
 
-def fix_value_string(text: str) -> str:
-    t = text
-    dot_pos = t.rfind(".")
-    comma_pos = t.rfind(",")
+def remove_whitespace(s: str) -> str:
+    result = re.sub(REGEX_WHITESPACE, "", s)
+    return result
+
+
+def remove_plus(s: str) -> str:
+    result = s.replace("+", "")
+    return result
+
+
+def sanitize_value_string(s: str) -> str:
+    result = remove_whitespace(s)
+    result = remove_plus(result)
+
+    dot_pos = result.rfind(".")
+    comma_pos = result.rfind(",")
     if comma_pos > dot_pos:
-        t = t.replace(".", "")
-        t = t.replace(",", ".")
+        result = result.replace(".", "")
+        result = result.replace(",", ".")
     else:
-        t = t.replace(",", "")
-    return t
+        result = result.replace(",", "")
+    return result
 
 
 def hash_string(s: str) -> str:
