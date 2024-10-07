@@ -1,6 +1,24 @@
+![](https://img.shields.io/badge/pypi-0.4.0-blue)
+![](https://img.shields.io/badge/python-3.12-blue)
+![](https://img.shields.io/badge/license-GPLv3.0-blue)
+
 # financebuddy
 
-FinanceBuddy is a tool that centralizes and parses data from diffent banks into a unified format, streamlining the process for analytics and reporting.
+`financebuddy` is a tool that centralizes and parses data from diffent banks into a unified format, streamlining the process for analytics and reporting.
+
+## Installing
+
+`financebuddy` can be installed using [pip](https://pypi.org/project/pip/).
+
+```sh
+pip install financebuddy
+```
+
+To test that installation was successful, try:
+
+```sh
+financebuddy-cli --help
+```
 
 ## How does it work?
 
