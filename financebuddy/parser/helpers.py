@@ -2,7 +2,7 @@
 import hashlib
 import re
 
-REGEX_WHITESPACE = re.compile(r"\s*")
+REGEX_WHITESPACE = re.compile(r"\s+")
 
 
 def remove_whitespace(s: str) -> str:
