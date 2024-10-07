@@ -68,7 +68,7 @@ def csv_row_to_model(row: int, content: list, config: CSVParserConfig) -> Report
             else:
                 value = dateutil.parser.parse(value)
         elif name == ReportTransactionField.VALUE:
-            value = decimal.Decimal(helpers.fix_value_string(value))
+            value = decimal.Decimal(helpers.sanitize_value_string(value))
         elif name == ReportTransactionField.CURRENCY:
             code = currencyutils.validate_currency(value)
             value = code
