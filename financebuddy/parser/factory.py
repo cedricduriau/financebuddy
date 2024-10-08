@@ -2,9 +2,13 @@
 from financebuddy.exceptions import FinanceBuddyException
 from financebuddy.parser.integrations.base import Parser
 from financebuddy.parser.integrations.csv import CSVParser
+from financebuddy.parser.integrations.excel import ExcelParser
 from financebuddy.parserconfig.models import ParserConfig, ParserExtension
 
-MAP_PARSER_BY_EXT: dict[ParserExtension, type[Parser]] = {ParserExtension.CSV: CSVParser}
+MAP_PARSER_BY_EXT: dict[ParserExtension, type[Parser]] = {
+    ParserExtension.CSV: CSVParser,
+    ParserExtension.XLSX: ExcelParser,
+}
 
 
 def get_parser_type(extension: ParserExtension) -> type[Parser]:

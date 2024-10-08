@@ -4,10 +4,12 @@ from typing import Any
 # package
 from financebuddy.exceptions import FinanceBuddyException
 from financebuddy.parserconfig.integrations.csv import CSVParserConfig
+from financebuddy.parserconfig.integrations.excel import ExcelParserConfig
 from financebuddy.parserconfig.models import ParserConfig, ParserExtension
 
 MAP_PARSER_CONFIGS_BY_EXT: dict[tuple[str | None, ParserExtension], type[ParserConfig]] = {
     (None, ParserExtension.CSV): CSVParserConfig,
+    (None, ParserExtension.XLSX): ExcelParserConfig,
 }
 
 

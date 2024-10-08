@@ -38,12 +38,11 @@ def fix_report_error() -> ReportError:
 def fix_report(fix_report_transaction, fix_report_error) -> Report:
     report = Report(
         items=[
-            ReportItem(model=fix_report_transaction),
+            ReportItem(transaction=fix_report_transaction),
             ReportItem(error=fix_report_error),
         ],
         summary=ReportSummary(
             total=2,
-            skipped=0,
             parsed=1,
             failed=1,
         ),
