@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/pypi-0.5.0-blue)
+![](https://img.shields.io/badge/pypi-0.6.0-blue)
 ![](https://img.shields.io/badge/python-3.12-blue)
 ![](https://img.shields.io/badge/license-GPLv3.0-blue)
 
