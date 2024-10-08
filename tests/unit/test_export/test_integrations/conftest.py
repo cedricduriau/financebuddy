@@ -43,7 +43,6 @@ def fix_report(fix_report_transaction, fix_report_error) -> Report:
         ],
         summary=ReportSummary(
             total=2,
-            skipped=0,
             parsed=1,
             failed=1,
         ),
