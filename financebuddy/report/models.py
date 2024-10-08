@@ -49,7 +49,6 @@ class ReportItem(BaseModel):
 
 class ReportSummary(BaseModel):
     total: int
-    skipped: int
     parsed: int
     failed: int
 

@@ -31,7 +31,7 @@ def load_parser_config(path: str) -> ParserConfig:
         raise FinanceBuddyException(f"file contains an unknown extension '{raw_extension}': {path}")
 
     format: str | None = None
-    if extension != ParserExtension.CSV:
+    if extension not in [ParserExtension.CSV, ParserExtension.XLSX]:
         format = content.get("format")
 
     configuration = factory.get_parser_config(path, format, extension, content)
