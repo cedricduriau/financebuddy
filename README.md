@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/pypi-0.5.0-blue)
+![](https://img.shields.io/badge/pypi-0.6.0-blue)
 ![](https://img.shields.io/badge/python-3.12-blue)
 ![](https://img.shields.io/badge/license-GPLv3.0-blue)
 
@@ -55,7 +55,7 @@ See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-
 {
     "items": [
         {
-            "model": {
+            "transaction": {
                 "src_bank_name": "ACME",
                 "src_account_holder": "JOHN DOE",
                 "src_account_number": "AA11223344",
@@ -73,7 +73,7 @@ See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-
             "error": null,
         },
         {
-            "model": null
+            "transaction": null,
             "error": "invalid date",
         }
     ],

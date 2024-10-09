@@ -43,13 +43,12 @@ class ReportError(BaseModel):
 
 
 class ReportItem(BaseModel):
-    model: ReportTransaction | None = None
+    transaction: ReportTransaction | None = None
     error: ReportError | None = None
 
 
 class ReportSummary(BaseModel):
     total: int
-    skipped: int
     parsed: int
     failed: int
 

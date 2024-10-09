@@ -8,6 +8,7 @@ from pydantic import BaseModel
 class ParserExtension(StrEnum):
     UNKNOWN = "unknown"
     CSV = "csv"
+    XLSX = "xlsx"
 
     @classmethod
     def _missing_(cls, value):
