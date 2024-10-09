@@ -79,7 +79,6 @@ See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-
     ],
     "summary": {
         "total": 2,
-        "skipped": 0,
         "parsed": 1,
         "failed": 1,
     }
