@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/pypi-0.6.0-blue)
+![](https://img.shields.io/badge/pypi-0.7.0-blue)
 ![](https://img.shields.io/badge/python-3.12-blue)
 ![](https://img.shields.io/badge/license-GPLv3.0-blue)
 
@@ -79,7 +79,6 @@ See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-
     ],
     "summary": {
         "total": 2,
-        "skipped": 0,
         "parsed": 1,
         "failed": 1,
     }
