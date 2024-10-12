@@ -124,7 +124,7 @@ class DataframeParser(Parser):
         for item in items:
             if item.error:
                 nr_of_errors += 1
-            else:
+            elif item.transaction:
                 nr_of_transactions += 1
 
         report = Report(
