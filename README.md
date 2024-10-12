@@ -47,7 +47,7 @@ Once parsed, a report file will be generated and dumped to the file system. This
 
 ### Available parser formats & extensions
 
-See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-parsers/tree/main?tab=readme-ov-file#available-sources).
+See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-parsers?tab=readme-ov-file#available-parsers).
 
 ### Example
 ```json
