@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/pypi-0.7.0-blue)
+![](https://img.shields.io/badge/pypi-0.8.0-blue)
 ![](https://img.shields.io/badge/python-3.12-blue)
 ![](https://img.shields.io/badge/license-GPLv3.0-blue)
 
@@ -47,7 +47,7 @@ Once parsed, a report file will be generated and dumped to the file system. This
 
 ### Available parser formats & extensions
 
-See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-parsers/tree/main?tab=readme-ov-file#available-sources).
+See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-parsers?tab=readme-ov-file#available-parsers).
 
 ### Example
 ```json
