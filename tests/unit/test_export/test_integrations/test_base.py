@@ -1,24 +1,20 @@
-# stdlib
 import datetime
 import os
 import tempfile
 
-# third party
-import pytest
-
-# package
-from financebuddy.export.integrations.base import Exporter
+from financebuddy.export.integrations.financebuddy_json import FinanceBuddyJSONExporter
+from financebuddy.export.models import ExporterConfig, ExporterExtension, ExporterFormat
 from financebuddy.report.models import Report
 
 
 def test_init():
-    assert Exporter.format == "unknown"
-    assert Exporter.extension == "unknown"
-    Exporter()
+    config = ExporterConfig(format=ExporterFormat.FINANCEBUDDY, extension=ExporterExtension.JSON)
+    exporter = FinanceBuddyJSONExporter(config)
+    assert exporter.config == config
 
 
 def test_report_to_export_report(fix_report: Report):
-    export_report = Exporter.report_to_export_report(fix_report)
+    export_report = FinanceBuddyJSONExporter.report_to_export_report(fix_report)
     assert len(export_report.transactions) == 1
 
 
@@ -28,14 +24,17 @@ def test_build_export_report_path(freezer, tmpdir, monkeypatch):
     freezer.move_to(datetime_str)
     timestamp = datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
 
-    exported = Exporter()
-    path = exported.build_export_report_path()
+    config = ExporterConfig(format=ExporterFormat.FINANCEBUDDY, extension=ExporterExtension.JSON)
+    exporter = FinanceBuddyJSONExporter(config)
+    path = exporter.build_export_report_path()
     dirname, basename = os.path.split(path)
     assert dirname == str(tmpdir)
-    assert basename == f"financebuddy_export_unknown_{timestamp}.unknown"
+    assert basename == f"financebuddy_export_financebuddy_{timestamp}.json"
 
 
 def test_dump_report():
-    exporter = Exporter()
-    with pytest.raises(NotImplementedError):
-        exporter.dump_report(object())
+    config = ExporterConfig(format=ExporterFormat.FINANCEBUDDY, extension=ExporterExtension.JSON)
+    exporter = FinanceBuddyJSONExporter(config)
+    # Verify it has the method
+    assert hasattr(exporter, "dump_report")
+    assert callable(exporter.dump_report)

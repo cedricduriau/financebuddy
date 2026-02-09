@@ -1,16 +1,15 @@
-# stdlib
 import datetime
 import os
 import tempfile
+from abc import ABC, abstractmethod
 
-# package
-from financebuddy.export.models import ExporterExtension, ExporterFormat, ExportReport, ExportTransaction
+from financebuddy.export.models import ExporterConfig, ExportReport, ExportTransaction
 from financebuddy.report.models import Report
 
 
-class Exporter:
-    format: ExporterFormat = ExporterFormat.UNKNOWN
-    extension: ExporterExtension = ExporterExtension.UNKNOWN
+class Exporter(ABC):
+    def __init__(self, config: ExporterConfig) -> None:
+        self.config = config
 
     @staticmethod
     def report_to_export_report(report: Report) -> ExportReport:
@@ -25,12 +24,14 @@ class Exporter:
     def build_export_report_path(self) -> str:
         directory = tempfile.gettempdir()
         timestamp = datetime.datetime.now(datetime.timezone.utc).timestamp()
-        basename = f"financebuddy_export_{self.format}_{timestamp}.{self.extension}"
+        basename = f"financebuddy_export_{self.config.format}_{timestamp}.{self.config.extension}"
         path = os.path.join(directory, basename)
         return path
 
+    @abstractmethod
     def dump_report(self, export_report: ExportReport) -> str:
-        raise NotImplementedError()
+        """Write export report to file."""
+        pass
 
     def export_report(self, report: Report) -> str:
         export_report = self.report_to_export_report(report)

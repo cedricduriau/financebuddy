@@ -1,22 +1,14 @@
-# stdlib
-from enum import StrEnum
-
-# third party
 from pydantic import BaseModel
 
-# package
+from financebuddy.exporterconfig.models import (
+    CSVExporterSettings,
+    ExporterConfig,
+    ExporterConfigSettings,
+    ExporterExtension,
+    ExporterFormat,
+    JSONExporterSettings,
+)
 from financebuddy.report.models import ReportTransaction
-
-
-class ExporterFormat(StrEnum):
-    UNKNOWN = "unknown"
-    FINANCEBUDDY = "financebuddy"
-
-
-class ExporterExtension(StrEnum):
-    UNKNOWN = "unknown"
-    JSON = "json"
-    CSV = "csv"
 
 
 class ExportTransaction(ReportTransaction):
@@ -25,3 +17,15 @@ class ExportTransaction(ReportTransaction):
 
 class ExportReport(BaseModel):
     transactions: list[ExportTransaction]
+
+
+__all__ = [
+    "ExporterConfig",
+    "ExporterConfigSettings",
+    "ExporterExtension",
+    "ExporterFormat",
+    "CSVExporterSettings",
+    "JSONExporterSettings",
+    "ExportTransaction",
+    "ExportReport",
+]
