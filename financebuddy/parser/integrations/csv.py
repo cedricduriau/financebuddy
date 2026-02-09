@@ -1,7 +1,5 @@
-# third party
 import pandas as pd
 
-# package
 from financebuddy.parser.integrations.dataframe import DataframeParser
 from financebuddy.parserconfig.integrations.csv import CSVParserConfig
 from financebuddy.parserconfig.models import ParserExtension

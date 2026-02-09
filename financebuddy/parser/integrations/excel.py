@@ -1,10 +1,7 @@
-# stdlib
 import warnings
 
-# third party
 import pandas as pd
 
-# package
 from financebuddy.parser.integrations.dataframe import DataframeParser
 from financebuddy.parserconfig.integrations.excel import ExcelParserConfig
 from financebuddy.parserconfig.models import ParserExtension

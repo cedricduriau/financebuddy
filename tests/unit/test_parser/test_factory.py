@@ -1,8 +1,6 @@
-# third party
 import pytest
 
-# package
-from financebuddy.exceptions import FinanceBuddyException
+from financebuddy.exceptions import UnsupportedFormatError
 from financebuddy.parser import factory
 from financebuddy.parser.integrations.base import Parser
 from financebuddy.parser.integrations.csv import CSVParser
@@ -22,8 +20,8 @@ def test_get_parser_type(
     assert factory.get_parser_type(extension) == ParserType
 
 
-def test_get_parser_type_raise_FinanceBuddyException():
-    with pytest.raises(FinanceBuddyException):
+def test_get_parser_type_raise_UnsupportedFormatError():
+    with pytest.raises(UnsupportedFormatError):
         factory.get_parser_type("?")
 
 
