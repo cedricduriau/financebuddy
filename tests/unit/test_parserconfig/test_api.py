@@ -1,11 +1,8 @@
-# stdlib
 import os
 
-# third party
 import pytest
 
-# package
-from financebuddy.exceptions import FinanceBuddyException
+from financebuddy.exceptions import ConfigurationError, UnsupportedFormatError
 from financebuddy.parserconfig import api
 
 
@@ -28,7 +25,7 @@ def test_load_parser_config(
 
 
 def test_load_parser_config_fail_path_does_not_exist():
-    with pytest.raises(FinanceBuddyException):
+    with pytest.raises(ConfigurationError):
         api.load_parser_config("")
 
 
@@ -46,7 +43,7 @@ def test_load_parser_config_fail(
     mock_financebuddy_parsers_dir_configs: None,
 ):
     path = os.path.join(fix_financebuddy_parsers_dir_configs, basename)
-    with pytest.raises(FinanceBuddyException):
+    with pytest.raises(ConfigurationError):
         api.load_parser_config(path)
 
 
@@ -67,5 +64,5 @@ def test_find_parser_config(mock_financebuddy_parsers_dir_configs: None):
 
 
 def test_find_parser_config_fail():
-    with pytest.raises(FinanceBuddyException):
+    with pytest.raises(UnsupportedFormatError):
         api.find_parser_config("?", "?")

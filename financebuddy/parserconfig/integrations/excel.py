@@ -1,4 +1,3 @@
-# package
 from financebuddy.parserconfig.integrations.dataframe import DataframeParserConfig, DataframeParserConfigSettings
 from financebuddy.parserconfig.models import ParserExtension
 
