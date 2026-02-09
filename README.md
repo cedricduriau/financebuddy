@@ -4,7 +4,13 @@
 
 # financebuddy
 
-`financebuddy` is a tool that centralizes and parses data from different banks into a unified format, streamlining the process for analytics and reporting.
+`financebuddy` is a command-line tool that parses financial data from multiple banks into a unified, standardized format—enabling seamless integration with analytics and reporting systems.
+
+**Key Features:**
+- Parse multiple bank export formats (CSV, XLSX, etc.)
+- Standardized transaction output (JSON, CSV)
+- Detailed error reporting with recovery hints
+- Batch processing and pipeline support
 
 ## Installing
 
@@ -20,12 +26,19 @@ To test that installation was successful, try:
 financebuddy-cli --help
 ```
 
-## How does it work?
+## Quick Overview
 
-1. Export the data from your bank
-2. Parse the data from your bank generating a report
-3. Export the parsed report
-4. Feast
+1. **Export** data from your bank (CSV, XLSX, etc.)
+2. **Parse** with FinanceBuddy into a standardized report
+3. **Export** the report in your desired format (JSON, CSV, etc.)
+4. **Analyze** with confidence in unified, clean data
+
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Parsing](#parsing)
+- [Exporting](#exporting)
+- [FAQ](#faq)
+- [Development](#development)
 
 ## Quick Start
 
@@ -233,14 +246,51 @@ A: Run `financebuddy parsers list` to see available formats. See the [financebud
 
 ## Development
 
-### Install
+### Project Structure
+
+```
+financebuddy/
+├── parser/              # Parse bank exports into standardized format
+├── parserconfig/        # Configuration for parser integrations
+├── export/              # Export parsed data to various formats
+├── exporterconfig/      # Configuration for exporter integrations
+├── utils/               # Shared utilities
+├── logging.py           # Logging configuration
+└── cli.py               # Command-line interface
+```
+
+### Setup
+
 ```sh
 python -m venv .env
 source .env/bin/activate
 make install-dev
 ```
 
-### Test
+### Commands
+
+**Run all tests:**
 ```sh
 make test
+```
+
+**Run specific test module:**
+```sh
+pytest -svv tests/unit/test_parser/
+pytest -svv tests/unit/test_export/
+```
+
+**Check code quality:**
+```sh
+make check
+```
+
+**Auto-format code:**
+```sh
+make format
+```
+
+**Clean build artifacts:**
+```sh
+make clean
 ```
