@@ -5,7 +5,11 @@ from tabulate import tabulate
 
 from financebuddy import __version__
 from financebuddy.exceptions import (
+    ConfigurationError,
+    ExportError,
     FinanceBuddyException,
+    ParsingError,
+    UnsupportedFormatError,
 )
 from financebuddy.export import api as exportapi
 from financebuddy.exporterconfig import api as exporterconfigapi
@@ -94,6 +98,7 @@ def build_parser() -> ArgumentParser:
     p_export.add_argument("-f", "--format", required=True, help="format of the export file")
     p_export.add_argument("-e", "--extension", required=True, help="extension of the export file")
     p_export.add_argument("-i", "--input", required=True, help="path of the report file")
+    p_export.add_argument("--dry-run", action="store_true", help="print output to stdout instead of writing to file")
     p_export.set_defaults(func=export_report)
 
     return parser
@@ -123,6 +128,22 @@ def run(args: list[str] | None = None) -> int:
 
     try:
         func(**kwargs)
+    except UnsupportedFormatError as e:
+        logger.error(f"Unsupported format: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
+    except ConfigurationError as e:
+        logger.error(f"Configuration error: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
+    except ParsingError as e:
+        logger.error(f"Parsing error: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
+    except ExportError as e:
+        logger.error(f"Export error: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
     except FinanceBuddyException as e:
         print(f"{OUT_ERROR_PREFIX} {e.stdout()}")
         return 1
