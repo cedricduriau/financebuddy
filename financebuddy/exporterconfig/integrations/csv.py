@@ -1,4 +1,9 @@
-from financebuddy.exporterconfig.models import CSVExporterSettings, ExporterConfig
+from financebuddy.exporterconfig.models import ExporterConfig, ExporterConfigSettings
+
+
+class CSVExporterSettings(ExporterConfigSettings):
+    delimiter: str = ","
+    lineterminator: str = "\n"
 
 
 class CSVExporterConfig(ExporterConfig):

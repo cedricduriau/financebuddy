@@ -1,10 +1,8 @@
-# stdlib
 import datetime
 import json
 import os
 import tempfile
 
-# package
 from financebuddy.report.models import Report
 
 

@@ -24,15 +24,6 @@ class ExporterConfigSettings(BaseModel):
     pass
 
 
-class JSONExporterSettings(ExporterConfigSettings):
-    indent: int | None = 2
-
-
-class CSVExporterSettings(ExporterConfigSettings):
-    delimiter: str = ","
-    lineterminator: str = "\n"
-
-
 class ExporterConfig(BaseModel):
     format: ExporterFormat
     extension: ExporterExtension
