@@ -2,7 +2,7 @@
 import pytest
 
 # package
-from financebuddy import currencyutils
+from financebuddy.utils import currency as currencyutils
 
 
 def test_validate_currency():
