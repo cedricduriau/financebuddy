@@ -1,23 +1,30 @@
-# stdlib
 from argparse import ArgumentParser
 
-# third party
 from tabulate import tabulate
 
-# package
 from financebuddy import __version__
-from financebuddy.exceptions import FinanceBuddyException
+from financebuddy.exceptions import (
+    ConfigurationError,
+    ExportError,
+    FinanceBuddyException,
+    ParsingError,
+    UnsupportedFormatError,
+)
 from financebuddy.export import api as exportapi
+from financebuddy.exporterconfig import api as exporterconfigapi
+from financebuddy.logging import get_logger, setup_logging
 from financebuddy.parser import api as parserapi
 from financebuddy.parserconfig import api as configapi
 from financebuddy.report import api as reportapi
 
+logger = get_logger(__name__)
+
 OUT_ERROR_PREFIX = "financebuddy-cli: error:"
 
 
-# ==============================================================================
+# ====================================================================================
 # actions
-# ==============================================================================
+# ====================================================================================
 def list_parsers() -> None:
     configs = configapi.get_parser_configs()
     table_data = [[config.format, config.extension] for config in configs]
@@ -25,29 +32,42 @@ def list_parsers() -> None:
 
 
 def parse_file(format: str, extension: str, input: str) -> None:
+    logger.debug(f"Parsing file: {input} (format={format}, extension={extension})")
     config = configapi.find_parser_config(format, extension)
     report = parserapi.generate_report(input, config)
     report_path = reportapi.dump_report(report)
+    logger.info(f"Report generated: {report_path}")
     print(report_path)
 
 
 def list_exporters() -> None:
-    exporter_types = exportapi.get_exporters()
-    table_data = [[Exporter.format, Exporter.extension] for Exporter in exporter_types]
+    configs = exporterconfigapi.get_exporter_configs()
+    table_data = [[config.format, config.extension] for config in configs]
     print(tabulate(table_data, headers=["format", "extension"], tablefmt="rounded_grid"))
 
 
-def export_report(format: str, extension: str, input: str) -> None:
+def export_report(format: str, extension: str, input: str, dry_run: bool = False) -> None:
+    logger.debug(f"Exporting report: {input} (format={format}, extension={extension}, dry_run={dry_run})")
     report = reportapi.load_report(input)
-    export_path = exportapi.export_report(report, format, extension)
-    print(export_path)
+    config = exporterconfigapi.find_exporter_config(format, extension)
+    export_path = exportapi.export_report(report, config)
+    logger.info(f"Report exported: {export_path}")
+    if dry_run:
+        logger.info("Dry-run mode: output would be written to file")
+        with open(export_path, "r") as f:
+            print(f.read())
+    else:
+        print(export_path)
 
 
-# ==============================================================================
+# ====================================================================================
 # parser
-# ==============================================================================
+# ====================================================================================
 def build_parser() -> ArgumentParser:
-    description = "FinanceBuddy is a tool that centralizes and parses data from diffent banks into a unified format, streamlining the process for analytics and reporting."
+    description = (
+        "FinanceBuddy is a tool that centralizes and parses data from different banks "
+        "into a unified format, streamlining the process for analytics and reporting."
+    )
     parser = ArgumentParser(description=description)
     subparsers = parser.add_subparsers()
 
@@ -82,15 +102,17 @@ def build_parser() -> ArgumentParser:
     p_export.add_argument("-f", "--format", required=True, help="format of the export file")
     p_export.add_argument("-e", "--extension", required=True, help="extension of the export file")
     p_export.add_argument("-i", "--input", required=True, help="path of the report file")
+    p_export.add_argument("--dry-run", action="store_true", help="print output to stdout instead of writing to file")
     p_export.set_defaults(func=export_report)
 
     return parser
 
 
-# ==============================================================================
+# ====================================================================================
 # main
-# ==============================================================================
+# ====================================================================================
 def run(args: list[str] | None = None) -> int:
+    setup_logging()
     parser = build_parser()
     namespace = parser.parse_args(args)
     kwargs = vars(namespace)
@@ -103,12 +125,30 @@ def run(args: list[str] | None = None) -> int:
     try:
         func = kwargs.pop("func")
     except KeyError:
+        logger.error("Missing or incomplete action")
         print(f"{OUT_ERROR_PREFIX} missing or incomplete action, see -h/--help")
         return 1
 
     try:
         func(**kwargs)
+    except UnsupportedFormatError as e:
+        logger.error(f"Unsupported format: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
+    except ConfigurationError as e:
+        logger.error(f"Configuration error: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
+    except ParsingError as e:
+        logger.error(f"Parsing error: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
+    except ExportError as e:
+        logger.error(f"Export error: {e}")
+        print(f"{OUT_ERROR_PREFIX} {e}")
+        return 1
     except FinanceBuddyException as e:
+        logger.error(f"Operation failed: {e}")
         print(f"{OUT_ERROR_PREFIX} {e}")
         return 1
 
