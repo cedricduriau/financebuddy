@@ -36,7 +36,6 @@ class DataframeParser(Parser):
 
     @abstractmethod
     def read_file(self, path: str) -> pd.DataFrame:
-        """Read file and return a pandas DataFrame."""
         pass
 
     def row_to_transaction(self, row: list[str]) -> ReportTransaction:

@@ -12,5 +12,4 @@ class Parser(ABC):
 
     @abstractmethod
     def generate_report(self, path: str) -> Report:
-        """Parse a file and generate a Report."""
         pass

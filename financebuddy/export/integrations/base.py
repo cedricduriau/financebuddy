@@ -30,7 +30,6 @@ class Exporter(ABC):
 
     @abstractmethod
     def dump_report(self, export_report: ExportReport) -> str:
-        """Write export report to file."""
         pass
 
     def export_report(self, report: Report) -> str:
