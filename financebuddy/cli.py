@@ -1,3 +1,4 @@
+import os
 from argparse import ArgumentParser
 
 from tabulate import tabulate
@@ -112,7 +113,8 @@ def build_parser() -> ArgumentParser:
 # main
 # ====================================================================================
 def run(args: list[str] | None = None) -> int:
-    setup_logging()
+    setup_logging(level=os.getenv("LOGLEVEL") or "WARNING")
+
     parser = build_parser()
     namespace = parser.parse_args(args)
     kwargs = vars(namespace)
