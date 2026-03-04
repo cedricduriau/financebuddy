@@ -151,16 +151,12 @@ See [docs/COMMANDS.md](./docs/COMMANDS.md) for complete export reference.
 financebuddy exporters list
 
 # export parsed report
-financebuddy exporters export -f FORMAT -e EXTENSION -i FILE [--dry-run]
+financebuddy exporters export -f FORMAT -e EXTENSION -i FILE
 ```
 
 The parsed reports can be exported in different formats and extensions.
 
 The result is an exported file dumped to the file system. This file contains only the successfully parsed transactions from the provided report.
-
-**Optional flags:**
-- `--dry-run`: Preview the export output without writing to file
-- `--verbose`: Show debug logs
 
 ### Available exporter formats
 
@@ -202,21 +198,6 @@ A: The **format** is the bank or data source (e.g., `financebuddy`), while the *
 **Q: Where does the output file go?**
 
 A: By default, files are saved to `/tmp/financebuddy_report_TIMESTAMP.json` and `/tmp/financebuddy_export_TIMESTAMP.csv` (depending on format). You can specify a custom location with the `-o` flag.
-
-**Q: What if parsing fails?**
-
-A: Run with `--verbose` flag to see which rows failed and why:
-```bash
-financebuddy parsers parse -f financebuddy -e csv -i data.csv --verbose
-```
-See [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) for error code reference and solutions.
-
-**Q: Can I preview the export before writing?**
-
-A: Yes! Use `--dry-run` to preview without creating files:
-```bash
-financebuddy exporters export -f financebuddy -e csv -i report.json --dry-run
-```
 
 **Q: Can I parse bank data and export it straight away in one go?**
 
