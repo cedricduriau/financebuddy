@@ -3,7 +3,8 @@ import json
 from typing import Any
 
 from financebuddy.export.integrations.base import Exporter
-from financebuddy.export.models import CSVExporterSettings, ExportReport
+from financebuddy.export.models import ExportReport
+from financebuddy.exporterconfig.integrations.csv import CSVExporterSettings
 
 
 class FinanceBuddyCSVExporter(Exporter):

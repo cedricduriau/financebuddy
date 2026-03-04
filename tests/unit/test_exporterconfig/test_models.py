@@ -1,11 +1,6 @@
-from financebuddy.exporterconfig.integrations.csv import CSVExporterConfig
-from financebuddy.exporterconfig.integrations.json import JSONExporterConfig
-from financebuddy.exporterconfig.models import (
-    CSVExporterSettings,
-    ExporterExtension,
-    ExporterFormat,
-    JSONExporterSettings,
-)
+from financebuddy.exporterconfig.integrations.csv import CSVExporterConfig, CSVExporterSettings
+from financebuddy.exporterconfig.integrations.json import JSONExporterConfig, JSONExporterSettings
+from financebuddy.exporterconfig.models import ExporterExtension, ExporterFormat
 
 
 def test_csv_exporter_config():

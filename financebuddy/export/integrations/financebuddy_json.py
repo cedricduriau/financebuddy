@@ -1,7 +1,8 @@
 import json
 
 from financebuddy.export.integrations.base import Exporter
-from financebuddy.export.models import ExportReport, JSONExporterSettings
+from financebuddy.export.models import ExportReport
+from financebuddy.exporterconfig.integrations.json import JSONExporterSettings
 
 
 class FinanceBuddyJSONExporter(Exporter):

@@ -1,4 +1,3 @@
-# third party
 import babel.numbers
 import pycountry
 
