@@ -5,11 +5,7 @@ from tabulate import tabulate
 
 from financebuddy import __version__
 from financebuddy.exceptions import (
-    ConfigurationError,
-    ExportError,
     FinanceBuddyException,
-    ParsingError,
-    UnsupportedFormatError,
 )
 from financebuddy.export import api as exportapi
 from financebuddy.exporterconfig import api as exporterconfigapi
@@ -127,25 +123,8 @@ def run(args: list[str] | None = None) -> int:
 
     try:
         func(**kwargs)
-    except UnsupportedFormatError as e:
-        logger.error(f"Unsupported format: {e}")
-        print(f"{OUT_ERROR_PREFIX} {e}")
-        return 1
-    except ConfigurationError as e:
-        logger.error(f"Configuration error: {e}")
-        print(f"{OUT_ERROR_PREFIX} {e}")
-        return 1
-    except ParsingError as e:
-        logger.error(f"Parsing error: {e}")
-        print(f"{OUT_ERROR_PREFIX} {e}")
-        return 1
-    except ExportError as e:
-        logger.error(f"Export error: {e}")
-        print(f"{OUT_ERROR_PREFIX} {e}")
-        return 1
     except FinanceBuddyException as e:
-        logger.error(f"Operation failed: {e}")
-        print(f"{OUT_ERROR_PREFIX} {e}")
+        print(f"{OUT_ERROR_PREFIX} {e.stdout()}")
         return 1
 
     return 0

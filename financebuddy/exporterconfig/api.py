@@ -19,32 +19,39 @@ def _get_config_dir() -> str:
 
 def load_exporter_config(path: str) -> ExporterConfig:
     if not os.path.exists(path):
-        raise ConfigurationError(f"exporter config file does not exist: {path}", ErrorCode.CONFIG_FILE_NOT_FOUND)
+        raise ConfigurationError(
+            f"exporter config file does not exist: {path}",
+            ErrorCode.CONFIG_FILE_NOT_FOUND,
+        )
 
     try:
         with open(path, "r") as fp:
             content: dict[str, Any] = json.load(fp)
     except Exception:
         raise ConfigurationError(
-            f"exporter config file does not contain a valid JSON object: {path}", ErrorCode.CONFIG_INVALID_JSON
+            f"exporter config file does not contain a valid JSON object: {path}",
+            ErrorCode.CONFIG_INVALID_JSON,
         )
 
     raw_format = content.get("format")
     if not raw_format:
         raise ConfigurationError(
-            f"exporter config file does not contain key 'format': {path}", ErrorCode.CONFIG_MISSING_FIELD
+            f"exporter config file does not contain key 'format': {path}",
+            ErrorCode.CONFIG_MISSING_FIELD,
         )
 
     raw_extension = content.get("extension")
     if not raw_extension:
         raise ConfigurationError(
-            f"exporter config file does not contain key 'extension': {path}", ErrorCode.CONFIG_MISSING_FIELD
+            f"exporter config file does not contain key 'extension': {path}",
+            ErrorCode.CONFIG_MISSING_FIELD,
         )
 
     extension = ExporterExtension(raw_extension)
     if extension == ExporterExtension.UNKNOWN:
         raise ConfigurationError(
-            f"file contains an unknown extension '{raw_extension}': {path}", ErrorCode.CONFIG_UNKNOWN_VALUE
+            f"file contains an unknown extension '{raw_extension}': {path}",
+            ErrorCode.CONFIG_UNKNOWN_VALUE,
         )
 
     logger.debug(f"Loading exporter config from: {path}")
@@ -83,6 +90,4 @@ def find_exporter_config(format: str, extension: str) -> ExporterConfig:
         config = load_exporter_config(path)
         return config
     except ConfigurationError:
-        raise UnsupportedFormatError(
-            f"no exporter found for format/extension: {format}/{extension}", ErrorCode.UNSUPPORTED_FORMAT
-        )
+        raise UnsupportedFormatError(f"no exporter found for format/extension: {format}/{extension}")

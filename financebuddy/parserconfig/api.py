@@ -18,26 +18,32 @@ def _get_config_dir() -> str:
 
 def load_parser_config(path: str) -> ParserConfig:
     if not os.path.exists(path):
-        raise ConfigurationError(f"parser config file does not exist: {path}", ErrorCode.CONFIG_FILE_NOT_FOUND)
+        raise ConfigurationError(
+            f"parser config file does not exist: {path}",
+            ErrorCode.CONFIG_FILE_NOT_FOUND,
+        )
 
     try:
         with open(path, "r") as fp:
             content: dict[str, Any] = json.load(fp)
     except Exception:
         raise ConfigurationError(
-            f"parser config file does not contain a valid JSON object: {path}", ErrorCode.CONFIG_INVALID_JSON
+            f"parser config file does not contain a valid JSON object: {path}",
+            ErrorCode.CONFIG_INVALID_JSON,
         )
 
     raw_extension = content.get("extension")
     if not raw_extension:
         raise ConfigurationError(
-            f"parser config file does not contain key 'extension': {path}", ErrorCode.CONFIG_MISSING_FIELD
+            f"parser config file does not contain key 'extension': {path}",
+            ErrorCode.CONFIG_MISSING_FIELD,
         )
 
     extension = ParserExtension(raw_extension)
     if extension == ParserExtension.UNKNOWN:
         raise ConfigurationError(
-            f"file contains an unknown extension '{raw_extension}': {path}", ErrorCode.CONFIG_UNKNOWN_VALUE
+            f"file contains an unknown extension '{raw_extension}': {path}",
+            ErrorCode.CONFIG_UNKNOWN_VALUE,
         )
 
     format: str | None = None
@@ -66,6 +72,4 @@ def find_parser_config(format: str, extension: str) -> ParserConfig:
         config = load_parser_config(path)
         return config
     except ConfigurationError:
-        raise UnsupportedFormatError(
-            f"no parser found for format/extension: {format}/{extension}", ErrorCode.UNSUPPORTED_FORMAT
-        )
+        raise UnsupportedFormatError(f"no parser found for format/extension: {format}/{extension}")
