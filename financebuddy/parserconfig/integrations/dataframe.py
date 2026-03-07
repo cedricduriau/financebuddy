@@ -1,4 +1,3 @@
-# package
 from financebuddy.parserconfig.models import ParserConfig, ParserConfigSettings
 from financebuddy.report.models import ReportTransactionField
 

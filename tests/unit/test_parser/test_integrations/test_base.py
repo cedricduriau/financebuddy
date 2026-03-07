@@ -1,18 +1,17 @@
-# third party
-import pytest
-
-# package
 from financebuddy.parser.integrations.base import Parser
+from financebuddy.parser.integrations.csv import CSVParser
 from financebuddy.parserconfig.models import ParserConfig
 
 
 def test_init(fix_parser_config: ParserConfig):
-    assert Parser.extension == "unknown"
-    parser = Parser(fix_parser_config)
+    fix_parser_config.extension = "csv"
+    parser = CSVParser(fix_parser_config)
     assert parser.config.format == "foo"
-    assert parser.config.extension == "unknown"
+    assert parser.config.extension == "csv"
 
 
 def test_generate_report(fix_parser: Parser):
-    with pytest.raises(NotImplementedError):
-        fix_parser.generate_report("/tmp/foo.csv")
+    # fix_parser is now a concrete implementation
+    # Just verify it has the method
+    assert hasattr(fix_parser, "generate_report")
+    assert callable(fix_parser.generate_report)

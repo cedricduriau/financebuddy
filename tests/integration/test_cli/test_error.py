@@ -31,4 +31,4 @@ def test_cli_exception_package(capfd, monkeypatch):
     out, _ = capfd.readouterr()
     out = out.rstrip(os.linesep)
 
-    assert out == "financebuddy-cli: error: oops!"
+    assert out == "financebuddy-cli: error: [0] oops!"

@@ -1,8 +1,6 @@
-# stdlib
 from typing import Any
 
-# package
-from financebuddy.exceptions import FinanceBuddyException
+from financebuddy.exceptions import UnsupportedFormatError
 from financebuddy.parserconfig.integrations.csv import CSVParserConfig
 from financebuddy.parserconfig.integrations.excel import ExcelParserConfig
 from financebuddy.parserconfig.models import ParserConfig, ParserExtension
@@ -19,7 +17,7 @@ def get_parser_config_type(format: str | None, extension: ParserExtension) -> ty
         ParserConfigType = MAP_PARSER_CONFIGS_BY_EXT[key]
     except KeyError:
         msg = f"parser config not supported for format/extension: {format}/{extension}"
-        raise FinanceBuddyException(msg)
+        raise UnsupportedFormatError(msg)
     return ParserConfigType
 
 

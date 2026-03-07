@@ -4,7 +4,13 @@
 
 # financebuddy
 
-`financebuddy` is a tool that centralizes and parses data from diffent banks into a unified format, streamlining the process for analytics and reporting.
+`financebuddy` is a command-line tool that parses financial data from multiple banks into a unified, standardized format—enabling seamless integration with analytics and reporting systems.
+
+**Key Features:**
+- Parse multiple bank export formats (CSV, XLSX, etc.)
+- Standardized transaction output (JSON, CSV)
+- Detailed error reporting with recovery hints
+- Batch processing and pipeline support
 
 ## Installing
 
@@ -20,21 +26,72 @@ To test that installation was successful, try:
 financebuddy-cli --help
 ```
 
-## How does it work?
+## Quick Overview
 
-1. Export the data from your bank
-2. Parse the data from your bank generating a report
-3. Export the parsed report
-4. Feast
+1. **Export** data from your bank (CSV, XLSX, etc.)
+2. **Parse** with FinanceBuddy into a standardized report
+3. **Export** the report in your desired format (JSON, CSV, etc.)
+4. **Analyze** with confidence in unified, clean data
+
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Parsing](#parsing)
+- [Exporting](#exporting)
+- [FAQ](#faq)
+- [Development](#development)
+
+## Quick Start
+
+Get up and running in 2 minutes:
+
+### 1. Parse your bank export
+
+```bash
+financebuddy parsers parse -f financebuddy -e csv -i bank_export.csv
+```
+
+Output:
+```
+/tmp/financebuddy_report_20260208T143000.json
+```
+
+The report contains all parsed transactions with a summary (total, parsed, failed counts).
+
+### 2. Export as JSON for analysis
+
+```bash
+financebuddy exporters export -f financebuddy -e json \
+  -i /tmp/financebuddy_report_20260208T143000.json
+```
+
+Output:
+```
+/tmp/financebuddy_export_20260208T143005.json
+```
+
+Done! Your data is now in a standardized format ready for analysis.
+
+### 3. Or use in a pipeline
+
+Parse and export in one command:
+
+```bash
+REPORT=$(financebuddy parsers parse -f financebuddy -e csv -i bank_export.csv)
+financebuddy exporters export -f financebuddy -e json -i $REPORT
+```
+
+**Next steps:** See [docs/COMMANDS.md](./docs/COMMANDS.md) for complete command reference and [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) if something goes wrong.
 
 ## Parsing
 
+See [docs/COMMANDS.md](./docs/COMMANDS.md) for complete parsing reference.
+
 ```sh
 # list the supported formats and extensions
-financebuddy-cli parsers list
+financebuddy parsers list
 
 # parse exported bank data
-financebuddy-cli parsers parse -f FORMAT -e EXTENSION -i FILE
+financebuddy parsers parse -f FORMAT -e EXTENSION -i FILE
 ```
 
 The exported bank data can be associated with a format and an extension.
@@ -87,17 +144,19 @@ See `financebuddy-parser` [README](https://github.com/cedricduriau/financebuddy-
 
 ## Exporting
 
+See [docs/COMMANDS.md](./docs/COMMANDS.md) for complete export reference.
+
 ```sh
 # list the supported formats and extensions
-financebuddy-cli exporters list
+financebuddy exporters list
 
 # export parsed report
-financebuddy-cli exporters export -f FORMAT -e EXTENSION -i FILE
+financebuddy exporters export -f FORMAT -e EXTENSION -i FILE
 ```
 
 The parsed reports can be exported in different formats and extensions.
 
-The result is an exported file dumped to the file system. This file contains only the soccessfully parsed transactions from the provided report.
+The result is an exported file dumped to the file system. This file contains only the successfully parsed transactions from the provided report.
 
 ### Available exporter formats
 
@@ -132,25 +191,87 @@ The result is an exported file dumped to the file system. This file contains onl
 
 ## FAQ
 
-### Can I parse bank data and export it straight away in one go?
+**Q: What's the difference between format and extension?**
 
-Yes. Pipelines are friends of ours here.
+A: The **format** is the bank or data source (e.g., `financebuddy`), while the **extension** is the file type (e.g., `csv`, `xlsx`). Together they identify how to parse your data.
+
+**Q: Where does the output file go?**
+
+A: By default, files are saved to `/tmp/financebuddy_report_TIMESTAMP.json` and `/tmp/financebuddy_export_TIMESTAMP.csv` (depending on format). You can specify a custom location with the `-o` flag.
+
+**Q: Can I parse bank data and export it straight away in one go?**
+
+A: Yes. Pipelines are friends of ours here.
 
 ```sh
 # parse + export
-financebuddy-cli parsers parse -f FORMAT -e EXTENSION -i FILE | xargs -I{} financebuddy-cli exporters export -f financebuddy -e json -i {}
+financebuddy parsers parse -f FORMAT -e EXTENSION -i FILE | \
+  xargs -I{} financebuddy exporters export -f financebuddy -e json -i {}
 ```
+
+**Q: What if I get an error code like "2001"?**
+
+A: Error codes help identify the problem. See [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) for detailed explanation and recovery steps for each error code.
+
+**Q: I can't find my output file. Where is it?**
+
+A: Check `/tmp/` for `financebuddy_*` files. Or specify where you want it with the `-o` option.
+
+**Q: Does this work on macOS/Windows/Linux?**
+
+A: Yes! FinanceBuddy works on all platforms. Just make sure you have Python 3.12+ installed.
+
+**Q: What bank formats are supported?**
+
+A: Run `financebuddy parsers list` to see available formats. See the [financebuddy-parsers](https://github.com/cedricduriau/financebuddy-parsers?tab=readme-ov-file#available-parsers) documentation for details on each format.
 
 ## Development
 
-### Install
+### Project Structure
+
+```
+financebuddy/
+├── parser/              # Parse bank exports into standardized format
+├── parserconfig/        # Configuration for parser integrations
+├── export/              # Export parsed data to various formats
+├── exporterconfig/      # Configuration for exporter integrations
+├── utils/               # Shared utilities
+├── logging.py           # Logging configuration
+└── cli.py               # Command-line interface
+```
+
+### Setup
+
 ```sh
 python -m venv .env
 source .env/bin/activate
 make install-dev
 ```
 
-### Test
+### Commands
+
+**Run all tests:**
 ```sh
 make test
+```
+
+**Run specific test module:**
+```sh
+pytest -svv tests/unit/test_parser/
+pytest -svv tests/unit/test_export/
+```
+
+**Check code quality:**
+```sh
+make check
+```
+
+**Auto-format code:**
+```sh
+make format
+```
+
+**Clean build artifacts:**
+```sh
+make clean
 ```

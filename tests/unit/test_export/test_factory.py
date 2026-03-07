@@ -1,13 +1,11 @@
-# third party
 import pytest
 
-# package
-from financebuddy.exceptions import FinanceBuddyException
+from financebuddy.exceptions import UnsupportedFormatError
 from financebuddy.export import factory
 from financebuddy.export.integrations.base import Exporter
 from financebuddy.export.integrations.financebuddy_csv import FinanceBuddyCSVExporter
 from financebuddy.export.integrations.financebuddy_json import FinanceBuddyJSONExporter
-from financebuddy.export.models import ExporterExtension, ExporterFormat
+from financebuddy.export.models import ExporterConfig, ExporterExtension, ExporterFormat
 
 
 @pytest.mark.parametrize(
@@ -22,16 +20,19 @@ def test_get_exporter_type(
     extension: ExporterExtension,
     ExporterType: type[Exporter],
 ):
-    assert factory.get_exporter_type(format, extension) == ExporterType
+    config = ExporterConfig(format=format, extension=extension)
+    assert factory.get_exporter_type(config) == ExporterType
 
 
-def test_get_exporter_type_raise_FinanceBuddyException():
-    with pytest.raises(FinanceBuddyException):
-        factory.get_exporter_type("?", "?")
+def test_get_exporter_type_raise_UnsupportedFormatError():
+    with pytest.raises(UnsupportedFormatError):
+        config = ExporterConfig(format=ExporterFormat.UNKNOWN, extension=ExporterExtension.UNKNOWN)
+        factory.get_exporter_type(config)
 
 
 def test_get_exporter():
-    exporter = factory.get_exporter(ExporterFormat.FINANCEBUDDY, ExporterExtension.JSON)
+    config = ExporterConfig(format=ExporterFormat.FINANCEBUDDY, extension=ExporterExtension.JSON)
+    exporter = factory.get_exporter(config)
     assert isinstance(exporter, FinanceBuddyJSONExporter)
 
 

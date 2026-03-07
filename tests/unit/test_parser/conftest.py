@@ -1,9 +1,7 @@
-# third party
 import pytest
 
-# package
 from financebuddy.parser.integrations.base import Parser
-from financebuddy.parser.integrations.dataframe import DataframeParser
+from financebuddy.parser.integrations.csv import CSVParser
 from financebuddy.parserconfig.integrations.dataframe import DataframeParserConfig, DataframeParserConfigSettings
 from financebuddy.parserconfig.models import ParserConfig, ParserExtension
 
@@ -13,14 +11,14 @@ def fix_parser_config() -> ParserConfig:
     config = ParserConfig(
         path="/tmp/foo.json",
         format="foo",
-        extension=ParserExtension.UNKNOWN,
+        extension=ParserExtension.CSV,
     )
     return config
 
 
 @pytest.fixture
 def fix_parser(fix_parser_config: ParserConfig) -> Parser:
-    parser = Parser(fix_parser_config)
+    parser = CSVParser(fix_parser_config)
     return parser
 
 
@@ -29,13 +27,13 @@ def fix_parser_config_dataframe() -> DataframeParserConfig:
     config = DataframeParserConfig(
         path="/tmp/foo.json",
         format="foo",
-        extension=ParserExtension.UNKNOWN,
+        extension=ParserExtension.CSV,
         settings=DataframeParserConfigSettings(field_map={}),
     )
     return config
 
 
 @pytest.fixture
-def fix_parser_dataframe(fix_parser_config_dataframe: DataframeParserConfig) -> DataframeParser:
-    parser = DataframeParser(fix_parser_config_dataframe)
+def fix_parser_dataframe(fix_parser_config_dataframe: DataframeParserConfig):
+    parser = CSVParser(fix_parser_config_dataframe)
     return parser
