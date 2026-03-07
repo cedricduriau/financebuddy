@@ -82,48 +82,6 @@ financebuddy exporters export -f financebuddy -e json -i $REPORT
 
 **Next steps:** See [docs/COMMANDS.md](./docs/COMMANDS.md) for complete command reference and [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) if something goes wrong.
 
-## Quick Start
-
-Get up and running in 2 minutes:
-
-### 1. Parse your bank export
-
-```bash
-financebuddy parsers parse -f financebuddy -e csv -i bank_export.csv
-```
-
-Output:
-```
-/tmp/financebuddy_report_20260208T143000.json
-```
-
-The report contains all parsed transactions with a summary (total, parsed, failed counts).
-
-### 2. Export as JSON for analysis
-
-```bash
-financebuddy exporters export -f financebuddy -e json \
-  -i /tmp/financebuddy_report_20260208T143000.json
-```
-
-Output:
-```
-/tmp/financebuddy_export_20260208T143005.json
-```
-
-Done! Your data is now in a standardized format ready for analysis.
-
-### 3. Or use in a pipeline
-
-Parse and export in one command:
-
-```bash
-REPORT=$(financebuddy parsers parse -f financebuddy -e csv -i bank_export.csv)
-financebuddy exporters export -f financebuddy -e json -i $REPORT
-```
-
-**Next steps:** See [docs/COMMANDS.md](./docs/COMMANDS.md) for complete command reference and [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) if something goes wrong.
-
 ## Parsing
 
 See [docs/COMMANDS.md](./docs/COMMANDS.md) for complete parsing reference.
